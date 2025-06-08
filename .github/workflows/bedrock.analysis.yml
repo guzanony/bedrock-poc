@@ -37,6 +37,7 @@ jobs:
             --no-confirm-changeset \
             --capabilities CAPABILITY_IAM \
             --region ${{ secrets.AWS_REGION }}
+            --resolve-s3
 
       - name: Invocar Lambda (teste)
         run: |
