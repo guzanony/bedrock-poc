@@ -20,7 +20,7 @@ def lambda_handler(event, context):
         accept="application/json",
         body=json.dumps({
             "prompt": prompt,
-            "maxTokens": 256
+            "maxTokens": 256 
         })
     )
 
