@@ -1,0 +1,2 @@
+{"timestamp":"2025-06-10T10:00:00Z","level":"ERROR","message":"NullPointerException at line 42"}
+{"timestamp":"2025-06-10T10:00:05Z","level":"WARN","message":"Disk space at 90%"}

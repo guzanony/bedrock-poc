@@ -48,3 +48,9 @@ jobs:
             --payload file://payload.json \
             response.json
           cat response.json
+
+          - name: Notificar conclusão
+  run: |
+    echo "✅ Execução concluída com sucesso!"
+    echo "::notice title=IA::Análise da IA concluída com sucesso e resultado salvo no DynamoDB."
+

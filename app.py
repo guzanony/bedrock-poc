@@ -7,32 +7,40 @@ MODEL_ID = os.environ.get("MODEL_ID", "us.anthropic.claude-3-5-sonnet-20241022-v
 
 def lambda_handler(event, context):
     logs = event.get("logs", "")
-    prompt = f"""Você é um assistente que analisa logs de aplicação e retorna um JSON com 
-        'issues' e 'suggestions'.\n\n
-        ### Logs ###\n{logs}\n\n
-        ### Resposta JSON ###\n"""
-    print(prompt)
+    
+    prompt = (
+        "Você é um assistente que analisa logs de aplicação e retorna um JSON com "
+        "'issues' e 'suggestions'.\n\n"
+        f"### Logs ###\n{logs}\n\n"
+        "### Resposta JSON ###"
+    )
 
-    message = {
-        "role": "user",
-        "content": [
-            {
-                "text": prompt
-            }
-        ]
-    }
-    messages = []
-    messages.append(message)
+    messages = [
+        {"role": "user", "content": prompt}
+    ]
 
     response = bedrock.converse(
         modelId=MODEL_ID,
         messages=messages
     )
     
-    output_message = response['output']['message']
-    print(output_message)
+    ai_messages = response.get("messages") or response.get("output", {}).get("messages")
+    if not ai_messages or len(ai_messages) == 0:
+        return {
+            "statusCode": 500,
+            "body": "Nenhuma mensagem retornada pela IA"
+        }
+
+    raw = ai_messages[0]["content"]
+
+    try:
+        analysis = json.loads(raw)
+    except json.JSONDecodeError:
+        analysis = {"raw_output": raw}
+
+    print("Resposta IA:", analysis)
 
     return {
         "statusCode": 200,
-        "analysis": output_message
+        "analysis": analysis
     }
