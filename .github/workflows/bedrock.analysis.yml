@@ -33,11 +33,11 @@ jobs:
       - name: Deploy SAM
         run: |
           sam deploy \
-            --stack-name bedrock-log-stack \
-            --no-confirm-changeset \
-            --capabilities CAPABILITY_IAM \
-            --region ${{ secrets.AWS_REGION }}
-            --resolve-s3
+          --stack-name bedrock-log-stack \
+          --no-confirm-changeset \
+          --capabilities CAPABILITY_IAM \
+          --region ${{ secrets.AWS_REGION }} \
+          --s3-bucket bedrock-log-deploy
 
       - name: Invocar Lambda (teste)
         run: |
