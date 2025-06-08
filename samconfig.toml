@@ -1,0 +1,7 @@
+version = 0.1
+
+[default.deploy]
+region = "us-east-1"
+stack_name = "bedrock-poc-stack"
+s3_bucket = "meu-poc-bedrock-artifacts"
+capabilities = "CAPABILITY_IAM"

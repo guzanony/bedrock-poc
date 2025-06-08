@@ -1,0 +1,38 @@
+name: POC Bedrock Log Analysis
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Instalar SAM CLI
+        run: pip install aws-sam-cli
+
+      - name: Build SAM
+        run: sam build
+
+      - name: Deploy SAM
+        run: sam deploy --no-confirm-changeset --capabilities CAPABILITY_IAM
+
+      - name: Invocar Lambda (teste)
+        run: |
+          echo '{"logs":"ERROR: Timeout at step 3"}' > payload.json
+          aws lambda invoke \
+            --function-name bedrock-log-analyzer \
+            --payload file://payload.json \
+            response.json
+          cat response.json

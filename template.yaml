@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  LogAnalyzerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: bedrock-log-analyzer
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      CodeUri: .
+      Role: arn:aws:iam::<SUA_CONTA>:role/bedrock-log-analyzer-role
+      Timeout: 30
+      MemorySize: 256
+      Environment:
+        Variables:
+          MODEL_ID: amazon.titan-tg1-large
+      Policies:
+        - AWSLambdaBasicExecutionRole
