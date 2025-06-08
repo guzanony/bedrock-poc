@@ -52,5 +52,4 @@ jobs:
       - name: Notificar conclusão
         run: |
          echo "✅ Execução concluída com sucesso!"
-         echo "::notice title=IA::Análise da IA concluída com sucesso e resultado salvo no DynamoDB."
-
+         echo "LogWise: 🚨 Alerta de Anomalia Detectada - Loop infinito de logs no serviço "payment-processor" iniciado em 23/11 às 14:32"
