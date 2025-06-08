@@ -6,28 +6,33 @@ bedrock = boto3.client("bedrock-runtime", region_name=os.environ["AWS_REGION"])
 MODEL_ID = os.environ.get("MODEL_ID", "us.anthropic.claude-3-5-sonnet-20241022-v2:0")
 
 def lambda_handler(event, context):
-    print(event)
     logs = event.get("logs", "")
-    prompt = (
-        """Você é um assistente que analisa logs de aplicação e retorna um JSON com 
+    prompt = f"""Você é um assistente que analisa logs de aplicação e retorna um JSON com 
         'issues' e 'suggestions'.\n\n
         ### Logs ###\n{logs}\n\n
         ### Resposta JSON ###\n"""
-    )
+    print(prompt)
 
-    response = bedrock.invoke_model(
+    message = {
+        "role": "user",
+        "content": [
+            {
+                "text": prompt
+            }
+        ]
+    }
+    messages = []
+    messages.append(message)
+
+    response = bedrock.converse(
         modelId=MODEL_ID,
-        contentType="application/json",
-        accept="application/json",
-        body=json.dumps({
-            "prompt": prompt,
-            "maxTokens": 256 
-        })
+        messages=messages
     )
+    
+    output_message = response['output']['message']
+    print(output_message)
 
-    raw = response["body"].read().decode()
-    result = json.loads(raw)
     return {
         "statusCode": 200,
-        "analysis": result
+        "analysis": output_message
     }
