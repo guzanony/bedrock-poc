@@ -3,7 +3,7 @@ import json
 import boto3
 
 bedrock = boto3.client("bedrock-runtime", region_name=os.environ["AWS_REGION"])
-MODEL_ID = os.environ.get("MODEL_ID", "amazon.titan-tg1-large")
+MODEL_ID = os.environ.get("MODEL_ID", "us.anthropic.claude-3-5-sonnet-20241022-v2:0")
 
 def lambda_handler(event, context):
     logs = event.get("logs", "")
