@@ -1,3 +1,9 @@
+name: POC Bedrock Log Analysis
+
+on:
+  push:
+    branches: [ main ]
+
 jobs:
   deploy-and-test:
     runs-on: ubuntu-latest
