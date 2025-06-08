@@ -2,8 +2,7 @@ import os
 import json
 import boto3
 
-# Cliente Bedrock e configuração
-bedrock = boto3.client("bedrock", region_name=os.environ["AWS_REGION"])
+bedrock = boto3.client("bedrock-runtime", region_name=os.environ["AWS_REGION"])
 MODEL_ID = os.environ.get("MODEL_ID", "amazon.titan-tg1-large")
 
 def lambda_handler(event, context):
@@ -19,10 +18,14 @@ def lambda_handler(event, context):
         modelId=MODEL_ID,
         contentType="application/json",
         accept="application/json",
-        body=json.dumps({"prompt": prompt, "maxTokens": 256})
+        body=json.dumps({
+            "prompt": prompt,
+            "maxTokens": 256
+        })
     )
 
-    result = json.loads(response["body"].read())
+    raw = response["body"].read().decode()
+    result = json.loads(raw)
     return {
         "statusCode": 200,
         "analysis": result
