@@ -25,9 +25,7 @@ jobs:
           python-version: '3.9'
 
       - name: Instalar SAM CLI
-        run: |
-         brew tap aws/tap
-         brew install aws-sam-cli
+        run: pip install aws-sam-cli==1.97.0
 
       - name: Build SAM
         run: sam build
