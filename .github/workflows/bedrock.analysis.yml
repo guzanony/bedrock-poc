@@ -31,7 +31,12 @@ jobs:
         run: sam build
 
       - name: Deploy SAM
-        run: sam deploy --no-confirm-changeset --capabilities CAPABILITY_IAM
+        run: |
+          sam deploy \
+            --stack-name bedrock-log-stack \
+            --no-confirm-changeset \
+            --capabilities CAPABILITY_IAM \
+            --region ${{ secrets.AWS_REGION }}
 
       - name: Invocar Lambda (teste)
         run: |
